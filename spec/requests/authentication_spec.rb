@@ -21,8 +21,7 @@ RSpec.describe 'Authentication', type: :request do
       }.to_json
     end
 
-    # set request.headers to our custon headers
-    # before { allow(request).to receive(:headers).and_return(headers) }
+   
 
     # returns auth token when request is valid
     context 'When request is valid' do

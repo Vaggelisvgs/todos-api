@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AuthorizeApiRequest do
   # Create test user
   let(:user) { create(:user) }
-  # Mock `Authorization` header
+  # `Authorization` header
   let(:header) { { 'Authorization' => token_generator(user.id) } }
   # Invalid request subject
   subject(:invalid_request_obj) { described_class.new({}) }
@@ -11,7 +11,6 @@ RSpec.describe AuthorizeApiRequest do
   subject(:request_obj) { described_class.new(header) }
 
   # Test Suite for AuthorizeApiRequest#call
-  # This is our entry point into the service class
   describe '#call' do
     # returns user object when request is valid
     context 'when valid request' do
@@ -21,7 +20,7 @@ RSpec.describe AuthorizeApiRequest do
       end
     end
 
-    # returns error message when invalid request
+    # returns Missing Token error message when invalid request
     context 'when invalid request' do
       context 'when missing token' do
         it 'raises a MissingToken error' do
@@ -36,12 +35,14 @@ RSpec.describe AuthorizeApiRequest do
           described_class.new('Authorization' => token_generator(5))
         end
 
+        # returns Invalid Token error message 
         it 'raises an InvalidToken error' do
           expect { invalid_request_obj.call }
             .to raise_error(ExceptionHandler::InvalidToken, /Invalid token/)
         end
       end
 
+      # returns Expired Token error message 
       context 'when token is expired' do
         let(:header) { { 'Authorization' => expired_token_generator(user.id) } }
         subject(:request_obj) { described_class.new(header) }
@@ -53,7 +54,7 @@ RSpec.describe AuthorizeApiRequest do
             )
         end
       end
-
+      # returns Wrong Token error
       context 'fake token' do
         let(:header) { { 'Authorization' => 'foobar' } }
         subject(:invalid_request_obj) { described_class.new(header) }

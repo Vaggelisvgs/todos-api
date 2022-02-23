@@ -67,3 +67,5 @@ group :test do
 gem 'bcrypt'
 
 gem 'jwt'
+
+gem 'rswag'

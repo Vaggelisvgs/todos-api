@@ -4,7 +4,7 @@ class AuthenticateUser
       @password = password
     end
   
-    # Service entry point
+    # token if user is authedicated
     def call
       JsonWebToken.encode(user_id: user.id) if user
     end
@@ -13,11 +13,11 @@ class AuthenticateUser
   
     attr_reader :email, :password
   
-    # verify user credentials
+    # check user's email and password
     def user
       user = User.find_by(email: email)
       return user if user && user.authenticate(password)
-      # raise Authentication error if credentials are invalid
+      # show error message
       raise(ExceptionHandler::AuthenticationError, Message.invalid_credentials)
     end
   end

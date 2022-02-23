@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-# Test suite for User model
+# user model test
 RSpec.describe User, type: :model do
   # Association test
-  # ensure User model has a 1:m relationship with the Todo model
+  # user has a 1:m relationship with todo
   it { should have_many(:todos) }
   # Validation tests
-  # ensure name, email and password_digest are present before save
+  # name, email and password_digest are required
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:email) }
   it { should validate_presence_of(:password_digest) }
